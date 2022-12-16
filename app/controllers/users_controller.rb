@@ -47,9 +47,7 @@ class UsersController < ApplicationController
 
     service.destroy(record_id)
 
-    unless service.success?
-      flash[:error] = service.errors.join(', ')
-    end
+    flash[:error] = service.errors.join(', ') unless service.success?
 
     redirect_to action: :index
   end

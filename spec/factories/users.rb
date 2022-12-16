@@ -17,7 +17,7 @@ FactoryBot.define do
 
     trait :with_picture do
       after(:build) do |user|
-        user.picture.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'image.jpg')), filename: 'image')
+        user.picture.attach(io: File.open(Rails.root.join('spec/fixtures/files/image.jpg')), filename: 'image')
       end
     end
   end

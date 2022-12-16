@@ -137,10 +137,10 @@ RSpec.describe UserService, type: :service do
     let(:id) { user.id }
 
     context 'with invalid parameters' do
-      let(:mock_user) { mock_model(User, destroy: false, errors: double(:errors, full_messages: ['lorem ipsum'])) }
+      let(:user_double) { instance_double(User, destroy: false, errors: double(:errors, full_messages: ['lorem ipsum'])) }
 
       before do
-        allow(User).to receive(:find).and_return(mock_user)
+        allow(User).to receive(:find).and_return(user_double)
       end
 
       it 'does not destroy a user' do
@@ -184,7 +184,7 @@ RSpec.describe UserService, type: :service do
 
     context 'with error' do
       context 'with api' do
-        before do 
+        before do
           allow(HTTParty).to receive(:get).and_return({})
           allow(Rails.logger).to receive(:error)
         end

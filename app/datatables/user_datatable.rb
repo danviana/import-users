@@ -1,10 +1,9 @@
 class UserDatatable < AjaxDatatablesRails::ActiveRecord
-
   def view_columns
     @view_columns ||= {
       id: { source: 'User.id', cond: :eq },
       name: { source: 'User.name', cond: :like },
-      email: { source: 'User.email', cond: :like },
+      email: { source: 'User.email', cond: :like }
     }
   end
 

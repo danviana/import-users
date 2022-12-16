@@ -257,8 +257,8 @@ RSpec.describe UsersController, type: :controller do
     context 'with success' do
       it 'destroy picture' do
         do_delete
-  
-        expect(user.reload.picture.attached?).to be_falsey
+
+        expect(user.reload.picture).not_to be_attached
       end
     end
   end

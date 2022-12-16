@@ -42,7 +42,7 @@ class UserService
   end
 
   def import(params)
-    Kernel.puts "Importação iniciada."
+    Kernel.puts 'Importação iniciada.'
 
     response = HTTParty.get('https://randomuser.me/api', query: params)
 
@@ -57,7 +57,7 @@ class UserService
 
       record = User.new(parameters)
 
-      record.picture.attach(io: downloaded_picture, filename: picture_url.split('/').last.chomp(".jpg"))
+      record.picture.attach(io: downloaded_picture, filename: picture_url.split('/').last.chomp('.jpg'))
 
       if record.save
         Kernel.puts "Usuário #{record.id} importado com sucesso."
@@ -66,7 +66,7 @@ class UserService
       end
     end
 
-    Kernel.puts "Importação finalizada."
+    Kernel.puts 'Importação finalizada.'
   rescue StandardError => e
     Rails.logger.error(e.message)
     Kernel.puts "ERRO: #{e.message}"
