@@ -1,0 +1,72 @@
+<div class="container mt-5">
+  <h3 style="margin: 0;display: inline-block;">Listagem de Usuários</h3>
+  <a href="/" class="btn btn-dark mx-3" style="float: right;">Voltar</a>
+  <%= link_to "Novo Usuário", new_user_path, class: "btn btn-primary", style: "float: right;" %>
+
+  <div class="row mt-5">
+    <table id="users-datatable" data-source="<%= users_path(format: :json) %>">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    const that = this;
+
+    this.datatable = $('#users-datatable').DataTable( {
+      processing: true,
+      serverSide: true,
+      lengthMenu: [[10, 15], [10, 15]],
+      language: { url: `//cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json` },
+      ajax: {
+        url: $('#users-datatable').data('source')
+      },
+      pagingType: 'full_numbers',
+      columns: [
+        { data: 'name' },
+        { data: 'email' },
+        { data: 'id', title: '', class: 'text-center', render: (data, type, row) => {
+          return `
+            <a title="Editar" target="_blank" class="btn btn-warning edit-button">
+              Editar
+            </a> \
+            <a title="Excluir" target="_blank" class="btn btn-danger delete-button">
+              Excluir
+            </a>`;
+        } }
+      ]
+    } );
+
+    $('#users-datatable tbody').on('click', '.edit-button', function(event) {
+      const data = that.datatable.row($(this).parents('tr')).data();
+
+      window.location = `${window.location.href}/${data.id}/edit`;
+    });
+
+    $('#users-datatable tbody').on('click', '.delete-button', function(event) {
+      const data = that.datatable.row($(this).parents('tr')).data();
+
+      if (window.confirm('Tem certeza que deseja excluir esse usuário?')) {
+        fetch('http://localhost:3000/users/' + data.id, {
+          method: 'DELETE',
+        })
+        .then(() => {
+          alert('Usuário excluído com sucesso!');
+          $('#users-datatable').DataTable().ajax.reload();
+        }).catch(err => {
+          console.error(err);
+          alert('Erro ao excluir usuário...');
+        });
+      }
+    });
+  } );
+</script>

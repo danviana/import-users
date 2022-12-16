@@ -1,0 +1,57 @@
+<%= form_with model: @user do |form| %>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <% flash.each do |message_type, message| %>
+          <div class="alert alert-<%= message_type.to_s %>">
+            <%= message %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-3 mt-5 text-center">
+        <% if @user&.id.present? && @user&.picture.present? %>
+          <%= image_tag @user.picture, style: "width: 200px; margin-right: 5px;" %>
+          <div class="d-grid gap-2 mx-2 my-2">
+            <%= link_to 'Remover', delete_picture_attachment_user_path(@user.picture.id), class: "btn btn-danger",
+                method: :delete,
+                data: { confirm: 'Tem certeza que deseja remover a imagem?' } %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <%= form.email_field :email, class: "form-control" %>
+        </div>
+        <div class="mb-3">
+          <label for="gender" class="form-label">Gênero</label>
+          <%= form.select :gender, [['Masculino', 'male'], ['Feminino', 'female']], { prompt:'' }, { class: "form-control" } %>
+        </div>
+        <div class="mb-3">
+          <label for="picture" class="form-label">Foto</label>
+          <%= form.file_field :picture, multiple: false, accept:'image/*', class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="col-md-6 offset-md-3">
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <% if @user&.id.present? %>
+            <%= link_to 'Excluir', user_path(@user.id), class: "btn btn-danger",
+                  method: :delete,
+                  data: { confirm: 'Tem certeza que deseja excluir esse usuário?' } %>
+          <% end %>
+          <%= link_to "Voltar", users_path, class: "btn btn-dark" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
